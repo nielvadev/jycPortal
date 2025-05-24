@@ -28,9 +28,9 @@ export class AppMenu {
                 label: 'Clientes',
                 items: [
                     {
-                        label: 'Crear/editar Cliente',
+                        label: 'Crear Cliente',
                         icon: 'pi pi-fw pi-plus',
-                        routerLink: ['/dashboard/clientes/crear']
+                        routerLink: ['/dashboard/clientes/crear-editar/0']
                     },
                     {
                         label: 'Clientes',

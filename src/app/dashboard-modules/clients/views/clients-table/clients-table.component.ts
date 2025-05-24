@@ -22,12 +22,6 @@ export class ClientsTableComponent implements OnInit {
     //#region Variables
     clients: IClient[] = []; // Array con clientes
 
-    disablePrev: boolean = true; // Desactivar botón de página anterior
-    disableNext: boolean = false; // Desactivar botón de página siguiente
-    page = 0; // Pagina actual en tabla
-    rows = 5; // Pagina actual en tabla
-    first = 1; // Primer registro Presentado
-    last = 1; // Ultimo registro Presentado
     totalRows = 5; // Total de registros
     searchValue: string | undefined; // Valor de busqueda
 
@@ -46,20 +40,17 @@ export class ClientsTableComponent implements OnInit {
         private messageService: MessageService,
         public _helpers: HelpersService
     ) {
-        this.getClients(this.rows, 0);
-        this.calculatePagination();
+        this.getClients();
     }
 
     ngOnInit() {}
 
     //#region Acciones Tabla
-    getClients(rows: number, page: number) {
+    getClients() {
         this._clients.getClients().subscribe({
             next: (res) => {
                 if (res.success) {
                     this.clients = res.data;
-                    this.totalRows = res.data.length;
-                    this.calculatePagination();
                 } else {
                     this.messageService.add({
                         severity: 'error',
@@ -72,11 +63,6 @@ export class ClientsTableComponent implements OnInit {
                 console.log(err);
             }
         });
-    }
-
-    calculatePagination() {
-        this.first = this.page * this.rows + 1; // Primer registro mostrado en la página
-        this.last = Math.min(this.page * this.rows + this.rows, this.totalRows); // Último registro mostrado o total de registros
     }
 
     onRowEditInit(client: IClient) {
@@ -109,25 +95,6 @@ export class ClientsTableComponent implements OnInit {
         this.searchValue = '';
     }
 
-    deleteClient(client: IClient) {
-        // this._clients.deleteClient(client.id).subscribe({
-        //     next: (response: any) => {
-        //         if (response.isError) {
-        //             this.messageService.add({
-        //                 severity: 'error',
-        //                 summary: 'Error',
-        //                 detail: 'Error al eliminar el cliente'
-        //             });
-        //             return;
-        //         } else {
-        //             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Cliente eliminado' });
-        //             this.getClients(this.rows, 0);
-        //         }
-        //     },
-        //     error: (error) => {
-        //         console.error(error);
-        //     }
-        // });
-    }
+    deleteClient(client: IClient) {}
     //#endregion
 }

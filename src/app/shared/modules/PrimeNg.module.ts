@@ -8,6 +8,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 
 @NgModule({
@@ -21,6 +22,7 @@ import { ToastModule } from 'primeng/toast';
         InputTextModule,
         SelectModule,
         TableModule,
+        TagModule,
         ToastModule
     ]
 })

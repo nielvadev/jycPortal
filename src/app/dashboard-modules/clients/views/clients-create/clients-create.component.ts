@@ -16,7 +16,7 @@ export function emailFormatValidator(): ValidatorFn {
 }
 
 @Component({
-    selector: 'app-clients-table',
+    selector: 'app-clients-create',
     standalone: true,
     imports: [PrimeNgModule, CommonModule, FormsModule, ReactiveFormsModule],
     templateUrl: './clients-create.component.html',

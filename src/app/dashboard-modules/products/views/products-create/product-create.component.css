@@ -1,0 +1,58 @@
+/* The switch-toggle - the box around the slider-toggle */
+.switch-parent {
+  width: 31px;
+  height: 21px;
+  position: relative;
+}
+
+/* Hide default HTML checkbox-toggle */
+.checkbox-toggle {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.switch-toggle {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background-color: #e9e9eb;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease-out;
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15), 0px 3px 1px rgba(0, 0, 0, 0.06);
+}
+
+/* The slider-toggle */
+.slider-toggle {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  left: calc(50% - 20px / 2 - 10px);
+  top: calc(50% - 20px / 2);
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15), 0px 3px 1px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease-out;
+  cursor: pointer;
+}
+
+.switch-toggle-parent:active .slider-toggle {
+  width: 37px;
+  border-radius: 20px;
+}
+
+.checkbox-toggle:checked + .switch-toggle:active .slider-toggle {
+  width: 37px;
+  left: calc(30% - 20px / 2 + 10px);
+}
+
+.checkbox-toggle:checked + .switch-toggle {
+  background-color: #34c759;
+}
+
+.checkbox-toggle:checked + .switch-toggle .slider-toggle {
+  left: calc(50% - 20px / 2 + 10px);
+  top: calc(50% - 20px / 2);
+}

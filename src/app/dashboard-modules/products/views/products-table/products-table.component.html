@@ -1,0 +1,142 @@
+<p-table
+    #table
+    [value]="products"
+    dataKey="id"
+    editMode="row"
+    [paginator]="true"
+    [rows]="10"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [globalFilterFields]="['name', 'price', 'description', 'stock']"
+    [tableStyle]="{ 'min-width': '50rem' }"
+>
+    <ng-template #caption>
+        <div class="flex">
+            <p-button label="Borrar filtro" [outlined]="true" icon="pi pi-filter-slash" (click)="clear(table)" />
+            <p-iconfield iconPosition="left" class="ml-auto">
+                <p-inputicon>
+                    <i class="pi pi-search"></i>
+                </p-inputicon>
+                <input pInputText type="text" (input)="table.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar en tabla ..." />
+            </p-iconfield>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="name">Código <p-sortIcon field="name" /></th>
+            <th pSortableColumn="description">Descripción <p-sortIcon field="description" /></th>
+            <th pSortableColumn="price" class="text-right">Precio <p-sortIcon field="price" /></th>
+            <th pSortableColumn="stock" class="text-center">Stock <p-sortIcon field="stock" /></th>
+            <th class="text-center">Estado</th>
+            <th class="text-center">Acciones</th>
+        </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
+        <tr [pEditableRow]="product">
+            <!-- Código -->
+            <td>
+                <p-cellEditor>
+                    <ng-template #input>
+                        <input pInputText [(ngModel)]="product.name" />
+                    </ng-template>
+                    <ng-template #output>
+                        {{ product.name }}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+
+            <!-- Descripción -->
+            <td>
+                <p-cellEditor>
+                    <ng-template #input>
+                        <input pInputText [(ngModel)]="product.description" />
+                    </ng-template>
+                    <ng-template #output>
+                        {{ product.description | uppercase }}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+
+            <!-- Precio -->
+            <td class="text-right">
+                <p-cellEditor>
+                    <ng-template #input>
+                        <p-inputnumber [(ngModel)]="product.price" inputId="currency-us" mode="currency" currency="USD" locale="de-DE" />
+                    </ng-template>
+                    <ng-template #output>
+                        {{ product.price | currency: '$ ' }}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+
+            <!-- Stock -->
+            <td class="text-center">
+                <p-cellEditor>
+                    <ng-template #input>
+                        <p-inputnumber [(ngModel)]="product.stock" id="initialUnits" inputId="minmax" mode="decimal" [min]="0" [max]="100" />
+                    </ng-template>
+                    <ng-template #output>
+                        {{ product.stock }}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+
+            <!-- Estado -->
+            <td class="text-center">
+                <p-tag [value]="getLabelStock(product)" [severity]="getSeverity(product)" styleClass="dark:!bg-surface-900" />
+            </td>
+
+            <!-- Botones -->
+            <td class="text-center">
+                <div class="flex justify-center gap-2">
+                    <button
+                        *ngIf="!editing"
+                        pButton
+                        pRipple
+                        type="button"
+                        icon="pi pi-pencil"
+                        pInitEditableRow
+                        (click)="onRowEditInit(product)"
+                        class="p-button-rounded p-button-text"
+                        pTooltip="Editar Producto"
+                    ></button>
+                    <button
+                        *ngIf="!editing"
+                        pButton
+                        pRipple
+                        type="button"
+                        icon="pi pi-eye"
+                        pInitEditableRow
+                        (click)="editProduct(product)"
+                        class="p-button-rounded p-button-text"
+                        pTooltip="Ir a detalle"
+                    ></button>
+                    <button
+                        *ngIf="editing"
+                        pButton
+                        pRipple
+                        type="button"
+                        icon="pi pi-check"
+                        pSaveEditableRow
+                        (click)="onRowEditSave(product)"
+                        class="p-button-rounded p-button-text"
+                        pTooltip="Guardar"
+                    ></button>
+                    <button
+                        *ngIf="editing"
+                        pButton
+                        pRipple
+                        type="button"
+                        icon="pi pi-times"
+                        pCancelEditableRow
+                        (click)="onRowEditCancel(product, ri)"
+                        class="p-button-rounded p-button-text"
+                        pTooltip="Cancelar"
+                    ></button>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+<p-toast />

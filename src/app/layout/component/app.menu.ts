@@ -29,13 +29,28 @@ export class AppMenu {
                 items: [
                     {
                         label: 'Crear Cliente',
-                        icon: 'pi pi-fw pi-plus',
+                        icon: 'pi pi-fw pi-user-plus',
                         routerLink: ['/dashboard/clientes/crear-editar/0']
                     },
                     {
-                        label: 'Clientes',
+                        label: 'Ver Clientes',
                         icon: 'pi pi-fw pi-address-book',
                         routerLink: ['/dashboard/clientes']
+                    }
+                ]
+            },
+            {
+                label: 'Productos',
+                items: [
+                    {
+                        label: 'Crear Producto',
+                        icon: 'pi pi-fw pi-plus',
+                        routerLink: ['/dashboard/productos/crear-editar/0']
+                    },
+                    {
+                        label: 'Ver Productos',
+                        icon: 'pi pi-fw pi-briefcase',
+                        routerLink: ['/dashboard/productos']
                     }
                 ]
             },

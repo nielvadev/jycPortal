@@ -16,12 +16,29 @@ export const appRoutes: Routes = [
                         children: [
                             {
                                 path: '',
-                                loadComponent: () => import('./app/dashboard-modules/clients/views/clients-table/clients-table.component').then((c) => c.ClientsTableComponent)
+                                loadComponent: () =>
+                                    import('./app/dashboard-modules/clients/views/clients-table/clients-table.component').then((c) => c.ClientsTableComponent)
                             },
                             {
                                 path: 'crear-editar/:id',
-                                loadComponent: () => import('./app/dashboard-modules/clients/views/clients-create/clients-create.component').then((c) => c.ClientsCreateComponent)
+                                loadComponent: () =>
+                                    import('./app/dashboard-modules/clients/views/clients-create/clients-create.component').then((c) => c.ClientsCreateComponent)
+                            }
+                        ]
+                    },
+                    {
+                        path: 'productos',
+                        children: [
+                            {
+                                path: '',
+                                loadComponent: () =>
+                                    import('./app/dashboard-modules/products/views/products-table/products-table.component').then((c) => c.ProductsTableComponent)
                             },
+                            {
+                                path: 'crear-editar/:id',
+                                loadComponent: () =>
+                                    import('./app/dashboard-modules/products/views/products-create/product-create.component').then((c) => c.ProductCreateComponent)
+                            }
                         ]
                     }
                 ]

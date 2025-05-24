@@ -13,7 +13,6 @@
     <p-table
         #table
         [value]="clients"
-        [rows]="rows"
         [tableStyle]="{ 'min-width': '50rem' }"
         [paginator]="true"
         [rows]="10"
@@ -22,7 +21,7 @@
     >
         <ng-template #caption>
             <div class="flex">
-                <p-button label="Borar filtro" [outlined]="true" icon="pi pi-filter-slash" (click)="clear(table)" />
+                <p-button label="Borrar filtro" [outlined]="true" icon="pi pi-filter-slash" (click)="clear(table)" />
                 <p-iconfield iconPosition="left" class="ml-auto">
                     <p-inputicon>
                         <i class="pi pi-search"></i>
@@ -70,6 +69,7 @@
                             class="p-button-rounded p-button-text p-button-danger"
                             pTooltip="Eliminar Cliente"
                             tooltipPosition="top"
+                            [disabled]="true"
                         ></button>
                     </div>
                 </td>

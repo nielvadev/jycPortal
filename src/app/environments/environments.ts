@@ -5,7 +5,5 @@ export const ENVIRONMENT = {
 
     // Urls Apis
     URL_API_CLIENTS: URL_BACKEND + 'api/Clients',
-    // URL_API_COMPANIES: 'http://localhost:5000/api/companies',
-    // URL_API_USERS: 'http://localhost:5000/api/users',
-    // URL_API_BRANCHES: 'http://localhost:5000/api/branches'
+    URL_API_PRODUCTS: URL_BACKEND + 'api/Products',
 };

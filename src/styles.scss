@@ -1,0 +1,33 @@
+/* You can add global styles to this file, and also import other style files */
+@use './tailwind.css';
+@use './assets/layout/layout.scss';
+@use 'primeicons/primeicons.css';
+
+body {
+    font-family: 'Lexend Deca', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --primary-color: #00afef;
+    --secondary-color: #413b1e;
+    --card-shadow: 2px 5px 7px -4px rgba(0, 0, 0, 0.171);
+    --secondary-font: 'DM Sans', sans-serif;
+}
+
+.primary-color {
+    color: var(--primary-color) !important;
+}
+
+.secondary-color {
+    color: var(--secondary-color) !important;
+}
+
+.font-secondary {
+    font-family: var(--secondary-font) !important;
+}
+
+.h-s-70 {
+    height: 70vh;
+}

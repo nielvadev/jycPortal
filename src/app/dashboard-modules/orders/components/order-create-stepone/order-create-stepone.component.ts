@@ -53,44 +53,113 @@ export class OrderCreateSteponeComponent implements OnInit {
     }
 
     getEstimatedDeliveryDate(inputDate: Date): Date {
-        const MIDDAY_HOUR = 12;
+        const currentDay = inputDate.getDay();
+        const currentHour = inputDate.getHours();
+        const currentMinute = inputDate.getMinutes();
+        const currentTimeInMinutes = currentHour * 60 + currentMinute;
 
-        // Cada entrada: [díaInicio, antesDelMediodia?, díaEntrega]
-        const windows: { from: number; afterMidday: boolean; deliverOn: number }[] = [
-            { from: 4, afterMidday: true, deliverOn: 1 }, // Jueves PM → Lunes
-            { from: 5, afterMidday: true, deliverOn: 2 }, // Viernes PM → Martes
-            { from: 6, afterMidday: true, deliverOn: 3 }, // Sábado PM → Miércoles
-            { from: 0, afterMidday: true, deliverOn: 4 }, // Domingo PM → Jueves
-            { from: 1, afterMidday: true, deliverOn: 5 }, // Lunes PM → Viernes
-            { from: 2, afterMidday: true, deliverOn: 6 }, // Martes PM → Sábado
-            { from: 3, afterMidday: true, deliverOn: 1 } // Miércoles PM → Lunes
-        ];
+        const NOON_IN_MINUTES = 12 * 60;
 
-        const day = inputDate.getDay();
-        const hour = inputDate.getHours();
-        const afterMidday = hour >= MIDDAY_HOUR;
+        let estimatedDeliveryDate = new Date(inputDate);
+        estimatedDeliveryDate.setHours(10, 0, 0, 0);
 
-        // Encontrar ventana actual
-        for (const w of windows) {
-            const sameDay = w.from === day;
-            const nextDay = (w.from + 1) % 7 === day;
+        const calculateDeliveryDate = (startDay: number, deliveryDay: number): Date => {
+            let daysToAdd = deliveryDay - startDay;
+            if (daysToAdd < 0) {
+                daysToAdd += 7;
+            }
+            const delivery = new Date(inputDate);
+            delivery.setDate(inputDate.getDate() + daysToAdd);
+            delivery.setHours(10, 0, 0, 0);
+            return delivery;
+        };
 
-            if ((sameDay && afterMidday && w.afterMidday) || (nextDay && !afterMidday && w.afterMidday)) {
-                const deliveryDate = new Date(inputDate);
-                let diff = w.deliverOn - day;
-                if (diff <= 0) diff += 7;
-                deliveryDate.setDate(inputDate.getDate() + diff);
-                deliveryDate.setHours(10, 0, 0, 0);
-                return deliveryDate;
+        // Para que los pedidos sean entregados el LUNES
+        // Opción 1: desde el viernes anterior al medio día hasta el sábado al medio día.
+        if (currentDay === 5 && currentTimeInMinutes >= NOON_IN_MINUTES) {
+            // Viernes después de 12:00 PM
+            estimatedDeliveryDate = calculateDeliveryDate(currentDay, 1); // 1 = Lunes
+            // Asegurarse de que sea el Lunes siguiente, no el de la misma semana si ya pasó
+            if (estimatedDeliveryDate.getDay() !== 1 || estimatedDeliveryDate < inputDate) {
+                estimatedDeliveryDate.setDate(estimatedDeliveryDate.getDate() + ((1 - estimatedDeliveryDate.getDay() + 7) % 7));
+            }
+        } else if (currentDay === 6 && currentTimeInMinutes < NOON_IN_MINUTES) {
+            // Sábado antes de 12:00 PM
+            estimatedDeliveryDate = calculateDeliveryDate(currentDay, 1); // 1 = Lunes
+            // Asegurarse de que sea el Lunes siguiente, no el de la misma semana si ya pasó
+            if (estimatedDeliveryDate.getDay() !== 1 || estimatedDeliveryDate < inputDate) {
+                estimatedDeliveryDate.setDate(estimatedDeliveryDate.getDate() + ((1 - estimatedDeliveryDate.getDay() + 7) % 7));
             }
         }
+        // Opción 2: desde el jueves después de medio día hasta el viernes al medio día.
+        else if (currentDay === 4 && currentTimeInMinutes >= NOON_IN_MINUTES) {
+            // Jueves después de 12:00 PM
+            estimatedDeliveryDate = calculateDeliveryDate(currentDay, 1); // 1 = Lunes
+        } else if (currentDay === 5 && currentTimeInMinutes < NOON_IN_MINUTES) {
+            // Viernes antes de 12:00 PM
+            estimatedDeliveryDate = calculateDeliveryDate(currentDay, 1); // 1 = Lunes
+        }
 
-        // Si no encontró ninguna ventana (Domingo completo), saltar al lunes
-        const nextMonday = new Date(inputDate);
-        const daysToMonday = (1 + 7 - day) % 7 || 7;
-        nextMonday.setDate(inputDate.getDate() + daysToMonday);
-        nextMonday.setHours(10, 0, 0, 0);
-        return nextMonday;
+        // Para que los pedidos sean entregados el MARTES
+        // desde el sábado anterior después de medio día hasta el domingo al medio día.
+        else if (currentDay === 6 && currentTimeInMinutes >= NOON_IN_MINUTES) {
+            // Sábado después de 12:00 PM
+            estimatedDeliveryDate = calculateDeliveryDate(currentDay, 2); // 2 = Martes
+        } else if (currentDay === 0 && currentTimeInMinutes < NOON_IN_MINUTES) {
+            // Domingo antes de 12:00 PM
+            estimatedDeliveryDate = calculateDeliveryDate(currentDay, 2); // 2 = Martes
+        }
+
+        // Para que los pedidos sean entregados el MIÉRCOLES
+        // desde el domingo anterior después de medio día hasta el lunes al medio día.
+        else if (currentDay === 0 && currentTimeInMinutes >= NOON_IN_MINUTES) {
+            // Domingo después de 12:00 PM
+            estimatedDeliveryDate = calculateDeliveryDate(currentDay, 3); // 3 = Miércoles
+        } else if (currentDay === 1 && currentTimeInMinutes < NOON_IN_MINUTES) {
+            // Lunes antes de 12:00 PM
+            estimatedDeliveryDate = calculateDeliveryDate(currentDay, 3); // 3 = Miércoles
+        }
+
+        // Para que los pedidos sean entregados el JUEVES
+        // desde el lunes después de medio día hasta el martes al medio día.
+        else if (currentDay === 1 && currentTimeInMinutes >= NOON_IN_MINUTES) {
+            // Lunes después de 12:00 PM
+            estimatedDeliveryDate = calculateDeliveryDate(currentDay, 4); // 4 = Jueves
+        } else if (currentDay === 2 && currentTimeInMinutes < NOON_IN_MINUTES) {
+            // Martes antes de 12:00 PM
+            estimatedDeliveryDate = calculateDeliveryDate(currentDay, 4); // 4 = Jueves
+        }
+
+        // Para que los pedidos sean entregados el VIERNES
+        // desde el martes después de medio día hasta el miércoles al medio día.
+        else if (currentDay === 2 && currentTimeInMinutes >= NOON_IN_MINUTES) {
+            // Martes después de 12:00 PM
+            estimatedDeliveryDate = calculateDeliveryDate(currentDay, 5); // 5 = Viernes
+        } else if (currentDay === 3 && currentTimeInMinutes < NOON_IN_MINUTES) {
+            // Miércoles antes de 12:00 PM
+            estimatedDeliveryDate = calculateDeliveryDate(currentDay, 5); // 5 = Viernes
+        }
+
+        // Para que los pedidos sean entregados el SÁBADO
+        // desde el miércoles después de medio día (hasta el jueves al medio día)
+        else if (currentDay === 3 && currentTimeInMinutes >= NOON_IN_MINUTES) {
+            // Miércoles después de 12:00 PM
+            estimatedDeliveryDate = calculateDeliveryDate(currentDay, 6); // 6 = Sábado
+        } else if (currentDay === 4 && currentTimeInMinutes < NOON_IN_MINUTES) {
+            // Jueves antes de 12:00 PM
+            estimatedDeliveryDate = calculateDeliveryDate(currentDay, 6); // 6 = Sábado
+        }
+        // Si no cae en ninguna de las ventanas de tiempo específicas (es decir, está "fuera de horario" para cualquier pedido),
+        // o cae en un momento que no está cubierto por las reglas explícitas (por ejemplo, sábado o domingo por la tarde fuera de las ventanas).
+        else {
+            console.log(`❌ Fecha de entrada (${inputDate.toLocaleString()}) fuera de las ventanas de pedido definidas.`);
+            // Podrías decidir si quieres lanzar un error, devolver null, o una fecha por defecto.
+            // Por ahora, para seguir el patrón anterior, devolvemos la misma fecha de entrada.
+            return new Date(inputDate);
+        }
+
+        console.log(`✅ Pedido dentro de ventana. Entrega estimada: ${estimatedDeliveryDate.toLocaleString()}`);
+        return estimatedDeliveryDate;
     }
 
     next(event: any) {

@@ -1,0 +1,100 @@
+<div class="w-full mb-4">
+    <h2 class="font-bold text-xl">Gestionar Pedidos</h2>
+</div>
+
+<div class="grid">
+    <div class="col-12 md:col-6">
+        <div class="card">
+            <h4>Crear nuevo Pedido</h4>
+            <p-button type="button" severity="primary" icon="pi pi-plus-circle" (onClick)="this.createModal = true" label="Crear Pedido" id="botonCrear"></p-button>
+        </div>
+    </div>
+
+    <div class="col-12 md:col-6">
+        <div class="card">
+            <div class="flex justify-between mb-2">
+                <div>
+                    <span class="block text-muted-color font-medium mb-4">Pedidos creados hoy</span>
+                    <div class="text-surface-900 dark:text-surface-0 primary-color font-medium text-4xl">{{ ordersNum }}</div>
+                </div>
+                <div class="flex items-center justify-center bg-blue-100 dark:bg-blue-400/10 rounded-border" style="width: 2.5rem; height: 2.5rem">
+                    <i class="pi pi-shopping-cart text-blue-500 !text-xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <p-table
+                #table
+                [value]="orders"
+                [tableStyle]="{ 'min-width': '50rem' }"
+                [paginator]="true"
+                [rows]="10"
+                [rowsPerPageOptions]="[10, 25, 50]"
+                [globalFilterFields]="['clientDoc', 'firstName', 'lastName', 'phone', 'email']"
+            >
+                <ng-template #caption>
+                    <div class="flex">
+                        <h4>Lista de Pedidos</h4>
+                        <p-iconfield iconPosition="left" class="ml-auto">
+                            <p-inputicon>
+                                <i class="pi pi-search"></i>
+                            </p-inputicon>
+                            <input pInputText type="text" (input)="table?.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar en tabla ..." />
+                        </p-iconfield>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Id Pedido</th>
+                        <th pSortableColumn="lastName">Fechas <p-sortIcon field="lastName" /></th>
+                        <th pSortableColumn="firstName">Cliente Receptor <p-sortIcon field="firstName" /></th>
+                        <th>Estado</th>
+                        <th style="width: 3rem"></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-order> </ng-template>
+                <!-- <tr>
+                    <td><strong>CC.</strong>&nbsp;{{ client.clientDoc }}</td>
+                    <td>{{ client.lastName | titlecase }}</td>
+                    <td>{{ client.firstName | titlecase }}</td>
+                    <td>
+                        <strong>{{ this._helpers.maskPhone(client.phone) }}</strong
+                        ><br />{{ client.email }}
+                    </td>
+                    <td>
+                        <div class="flex align-items-center justify-content-center">
+                            <button
+                                pButton
+                                pRipple
+                                type="button"
+                                icon="pi pi-pencil"
+                                (click)="onRowEditInit(client)"
+                                class="p-button-rounded p-button-text"
+                                pTooltip="Editar Cliente"
+                                tooltipPosition="top"
+                            ></button>
+                            <button
+                                pButton
+                                pRipple
+                                type="button"
+                                icon="pi pi-trash"
+                                (click)="confirmDelete($event, client)"
+                                class="p-button-rounded p-button-text p-button-danger"
+                                pTooltip="Eliminar Cliente"
+                                tooltipPosition="top"
+                                [disabled]="true"
+                            ></button>
+                        </div>
+                    </td>
+                </tr> -->
+            </p-table>
+        </div>
+    </div>
+</div>
+
+<p-dialog header="Crear Pedido" [modal]="true" [(visible)]="createModal" [style]="{ width: '90vw', height: '80vh' }">
+    <app-order-create-modal></app-order-create-modal>
+</p-dialog>

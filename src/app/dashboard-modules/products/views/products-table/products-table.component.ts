@@ -56,7 +56,7 @@ export class ProductsTableComponent implements OnInit {
                     this.messageService.add({
                         severity: 'error',
                         summary: 'Error',
-                        detail: 'Error al obtener los clientes'
+                        detail: 'Error al obtener los productos'
                     });
                 }
             },

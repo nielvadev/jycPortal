@@ -40,6 +40,24 @@ export const appRoutes: Routes = [
                                     import('./app/dashboard-modules/products/views/products-create/product-create.component').then((c) => c.ProductCreateComponent)
                             }
                         ]
+                    },
+                    {
+                        path: 'pedidos',
+                        children: [
+                            {
+                                path: '',
+                                loadComponent: () => import('./app/dashboard-modules/orders/views/orders-main/orders-main.component').then((c) => c.OrdersMainComponent)
+                            }
+                        ]
+                    },
+                    {
+                        path: 'entregas',
+                        children: [
+                            {
+                                path: '',
+                                loadComponent: () => import('./app/dashboard-modules/delivery/views/delivery-main/delivery-main.component').then((c) => c.DeliveryMainComponent)
+                            }
+                        ]
                     }
                 ]
             }

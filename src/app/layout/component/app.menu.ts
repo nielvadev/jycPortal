@@ -56,11 +56,11 @@ export class AppMenu {
             },
             {
                 label: 'Pedidos',
-                items: [{ label: 'Gestionar Pedidos', icon: 'pi pi-fw pi-box', routerLink: ['/pedidos'] }]
+                items: [{ label: 'Gestionar Pedidos', icon: 'pi pi-fw pi-box', routerLink: ['/dashboard/pedidos'] }]
             },
             {
                 label: 'Entregas',
-                items: [{ label: 'Gestionar Entregas', icon: 'pi pi-fw pi-truck', routerLink: ['/entregas'] }]
+                items: [{ label: 'Gestionar Entregas', icon: 'pi pi-fw pi-truck', routerLink: ['/dashboard/entregas'] }]
             }
         ];
     }

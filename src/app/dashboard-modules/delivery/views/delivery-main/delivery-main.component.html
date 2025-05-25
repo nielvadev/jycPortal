@@ -1,0 +1,34 @@
+<h3>Gestionar Entregas</h3>
+<div class="grid">
+    <!-- Columna izquierda -->
+    <div class="col-12 md:col-6 p-4">
+        <!-- Primer card: Estado -->
+        <div class="card mb-3">
+            <h2>Estado: <strong class="primary-color">Entregado</strong></h2>
+        </div>
+
+        <!-- Tercer card: Detalles del pedido -->
+        <div class="card">
+            <p>Pedido: <strong class="primary-color">123456</strong></p>
+            <p>Cliente: <strong class="primary-color">John Doe</strong></p>
+            <p>Fecha de Pedido: <strong class="primary-color">2022-01-01</strong></p>
+            <p>Fecha de Entrega: <strong class="primary-color">2022-01-03</strong></p>
+            <p>Dirección de Entrega: <strong class="primary-color">Calle 123 # 45 - 89, Ciudad</strong></p>
+        </div>
+    </div>
+
+    <!-- Columna derecha -->
+    <div class="col-12 md:col-6 p-4">
+        <div class="card">
+            <h5>Línea de tiempo:</h5>
+            <p-timeline [value]="events">
+                <ng-template #opposite let-event>
+                    <small class="text-surface-500 dark:text-surface-400">{{ event.date }}</small>
+                </ng-template>
+                <ng-template #content let-event>
+                    {{ event.status }}
+                </ng-template>
+            </p-timeline>
+        </div>
+    </div>
+</div>
